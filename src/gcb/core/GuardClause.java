@@ -26,19 +26,4 @@ public final class GuardClause {
 		}
 	}
 
-	/**
-	 * 引数で指定したオブジェクトと等しいこと調べるガード条件を返します。
-	 * @param obj このオブジェクトと等しいかどうかが調べられる
-	 * @return ガード条件を表すオブジェクト
-	 */
-	public static GuardCondition is(final Object obj) {
-		return new GuardCondition() {
-			public boolean match(Object arg) {
-				if (obj == null)
-					return arg == null;
-				return obj.equals(arg);
-			}
-		};
-	}
-
 }

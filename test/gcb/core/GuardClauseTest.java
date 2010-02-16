@@ -35,7 +35,8 @@ public class GuardClauseTest {
 		}
 	}
 
+	// hamcrestのisと区別するために用意
 	public static GuardCondition is_(final Object obj) {
-		return GuardClause.is(obj);
+		return GuardConditions.is(obj);
 	}
 }

@@ -1,16 +1,10 @@
-/**
- *
- */
 package gcb.core;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-/**
- * @author bleis-tift
- *
- */
+import org.junit.Test;
+
 public class GuardConditionsTest {
 
 	@Test
