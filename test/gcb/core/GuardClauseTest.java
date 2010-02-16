@@ -1,5 +1,8 @@
 package gcb.core;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import gcb.core.GuardConditionException;
 
 import org.junit.Test;
 
@@ -9,7 +12,7 @@ public class GuardClauseTest {
 	public void throwException() {
 		// マッチするのでArgExceptionが発生するはず
 		int arg = 0;
-		GuardClause.throwExceptionIf(arg, is(0));
+		GuardClause.throwExceptionIf(arg, is_(0));
 		fail();
 	}
 
@@ -17,11 +20,23 @@ public class GuardClauseTest {
 	public void notThrowException() {
 		// マッチしないので何も起こらないはず
 		int arg = 10;
-		GuardClause.throwExceptionIf(arg, is(0));
+		GuardClause.throwExceptionIf(arg, is_(0));
 	}
 
-	// テスト用のMatcher
-	private GuardCondition is(final Object obj) {
+	@Test
+	public void adjustedStackTrace() {
+		try {
+			GuardClause.throwExceptionIf(0, is_(0));
+			fail();
+		} catch (GuardConditionException e) {
+			// stack traceはthrowExceptionIfを書いたメソッドが先頭にくるはず
+			String methodNameThrownException =
+				e.getStackTrace()[0].getMethodName();
+			assertThat(methodNameThrownException, is("adjustedStackTrace"));
+		}
+	}
+
+	public static GuardCondition is_(final Object obj) {
 		return GuardClause.is(obj);
 	}
 }
