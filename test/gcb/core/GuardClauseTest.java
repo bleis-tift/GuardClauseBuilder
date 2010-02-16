@@ -16,6 +16,16 @@ public class GuardClauseTest {
 		fail();
 	}
 
+	@Test(expected=GuardConditionException.class)
+	public void throwException2() {
+		// 2番目の条件にマッチするのでArgExceptionが発生するはず
+		int arg = 0;
+		GuardClause.throwExceptionIf(arg).any(is_(20))
+											.or(isOutOfRange(2, 10))
+											.or(is_(-1));
+		fail();
+	}
+
 	@Test
 	public void notThrowException() {
 		// マッチしないので何も起こらないはず
