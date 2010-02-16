@@ -22,12 +22,6 @@ public class GuardClauseTest {
 
 	// テスト用のMatcher
 	private GuardCondition is(final Object obj) {
-		return new GuardCondition() {
-			public boolean match(Object arg) {
-				if (obj == null)
-					return arg == null;
-				return obj.equals(arg);
-			}
-		};
+		return GuardClause.is(obj);
 	}
 }
