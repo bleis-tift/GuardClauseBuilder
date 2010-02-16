@@ -1,6 +1,6 @@
 package gcb.core;
 
-import java.util.Arrays;
+import static gcb.utils.StackTraceUtil.removeTopStackTraceElement;
 
 /**
  * メソッド「any」のみを持つクラスで、直接使うことはありません。
@@ -22,15 +22,8 @@ public class Any<T> {
 	 * @return 次のガード条件を指定するためのオブジェクト
 	 */
 	public Or<T> any(GuardCondition<? super T> guardCond) {
-		if (guardCond.match(arg)) {
-			GuardConditionException e = new GuardConditionException();
-			// http://d.hatena.ne.jp/katzchang/20080820/p2
-			e.setStackTrace(
-					Arrays.asList(e.getStackTrace())
-							.subList(1, e.getStackTrace().length)
-							.toArray(new StackTraceElement[0]));
-			throw e;
-		}
+		if (guardCond.match(arg))
+			throw removeTopStackTraceElement(new GuardConditionException());
 		return new Or<T>(arg);
 	}
 

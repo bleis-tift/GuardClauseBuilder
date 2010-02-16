@@ -1,6 +1,6 @@
 package gcb.core;
 
-import java.util.Arrays;
+import static gcb.utils.StackTraceUtil.removeTopStackTraceElement;
 
 /**
  * メソッドの先頭に記述する引数チェック用ガード節の記述を簡潔に行うためのクラスです。
@@ -15,15 +15,8 @@ public final class GuardClause {
 	 * @param guardCond 条件を表すオブジェクト。nullを渡すことはできません。
 	 */
 	public static <T> void throwExceptionIf(T arg, GuardCondition<T> guardCond) {
-		if (guardCond.match(arg)) {
-			GuardConditionException e = new GuardConditionException();
-			// http://d.hatena.ne.jp/katzchang/20080820/p2
-			e.setStackTrace(
-					Arrays.asList(e.getStackTrace())
-							.subList(1, e.getStackTrace().length)
-							.toArray(new StackTraceElement[0]));
-			throw e;
-		}
+		if (guardCond.match(arg))
+			throw removeTopStackTraceElement(new GuardConditionException());
 	}
 
 	/**
