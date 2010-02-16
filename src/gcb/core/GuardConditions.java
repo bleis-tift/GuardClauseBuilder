@@ -1,5 +1,8 @@
 package gcb.core;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+
 /**
  * よく使用するガード条件をまとめたユーティリティクラスです。
  * @author bleis-tift
@@ -30,11 +33,25 @@ public final class GuardConditions {
 			public boolean match(Object arg) {
 				if (arg == null)
 					return true;
-				if (arg.equals(""))
-					return true;
+				if (arg instanceof CharSequence)
+					return arg.toString().equals("");
+				if (arg.getClass().isArray())
+					return isEmptyArray(arg);
+				if (arg instanceof Collection<?>)
+					return isEmptyCollection(arg);
 				return false;
 			}
 		};
+	}
+
+	static boolean isEmptyArray(Object array) {
+		assert(array != null && array.getClass().isArray());
+		return Array.getLength(array) == 0;
+	}
+
+	static boolean isEmptyCollection(Object collection) {
+		assert(collection != null && collection instanceof Collection<?>);
+		return ((Collection<?>)collection).isEmpty();
 	}
 
 }

@@ -3,6 +3,9 @@ package gcb.core;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.junit.Test;
 
 public class GuardConditionsTest {
@@ -20,9 +23,20 @@ public class GuardConditionsTest {
 
 	@Test
 	public void test() {
+		// nullはもちろんtrue
 		assertThat(GuardConditions.isNullOrEmpty().match(null), is(true));
+		// 空文字列はtrue、空白だけだとしても空じゃなければfalse
 		assertThat(GuardConditions.isNullOrEmpty().match(""), is(true));
 		assertThat(GuardConditions.isNullOrEmpty().match(" "), is(false));
+		// 空のStringBuilderもtrue
+		assertThat(GuardConditions.isNullOrEmpty().match(new StringBuilder()), is(true));
+		// 空の配列はtrue、そうじゃなければfalse
+		assertThat(GuardConditions.isNullOrEmpty().match(new int[0]), is(true));
+		assertThat(GuardConditions.isNullOrEmpty().match(new int[] { 1 }), is(false));
+		// 空のコレクションもtrue、そうじゃなければfalse
+		assertThat(GuardConditions.isNullOrEmpty().match(Collections.EMPTY_LIST), is(true));
+		assertThat(GuardConditions.isNullOrEmpty().match(Arrays.asList(1)), is(false));
+		// 数値は問答無用でfalse
 		assertThat(GuardConditions.isNullOrEmpty().match(0), is(false));
 	}
 }
