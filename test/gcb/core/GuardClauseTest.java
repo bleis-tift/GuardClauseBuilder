@@ -1,30 +1,33 @@
 package gcb.core;
-import gcb.core.ArgException;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-/**
- *
- */
-
-/**
- * @author bleis-tift
- *
- */
 public class GuardClauseTest {
 
-	@Test(expected=ArgException.class)
+	@Test(expected=GuardConditionException.class)
 	public void throwException() {
+		// マッチするのでArgExceptionが発生するはず
 		int arg = 0;
+		GuardClause.throwExceptionIf(arg, is(0));
+		fail();
+	}
+
+	@Test
+	public void notThrowException() {
+		// マッチしないので何も起こらないはず
+		int arg = 10;
 		GuardClause.throwExceptionIf(arg, is(0));
 	}
 
-	/**
-	 * @param i
-	 * @return
-	 */
-	private Matcher is(int i) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	// テスト用のMatcher
+	private GuardCondition is(final Object obj) {
+		return new GuardCondition() {
+			public boolean match(Object arg) {
+				if (obj == null)
+					return arg == null;
+				return obj.equals(arg);
+			}
+		};
 	}
 }
