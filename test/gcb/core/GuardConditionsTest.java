@@ -17,4 +17,12 @@ public class GuardConditionsTest {
 		assertThat(GuardConditions.is(null).match(10), is(false));
 		assertThat(GuardConditions.is(10).match(null), is(false));
 	}
+
+	@Test
+	public void test() {
+		assertThat(GuardConditions.isNullOrEmpty().match(null), is(true));
+		assertThat(GuardConditions.isNullOrEmpty().match(""), is(true));
+		assertThat(GuardConditions.isNullOrEmpty().match(" "), is(false));
+		assertThat(GuardConditions.isNullOrEmpty().match(0), is(false));
+	}
 }

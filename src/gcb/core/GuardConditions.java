@@ -21,4 +21,20 @@ public final class GuardConditions {
 		};
 	}
 
+	/**
+	 * null、もしくは空であることを調べるガード条件を返します。
+	 * @return ガード条件を表すオブジェクト
+	 */
+	public static GuardCondition isNullOrEmpty() {
+		return new GuardCondition() {
+			public boolean match(Object arg) {
+				if (arg == null)
+					return true;
+				if (arg.equals(""))
+					return true;
+				return false;
+			}
+		};
+	}
+
 }
