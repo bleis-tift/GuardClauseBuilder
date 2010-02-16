@@ -1,4 +1,5 @@
 package gcb.core;
+import static gcb.core.GuardConditions.isOutOfRange;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -25,7 +26,7 @@ public class GuardClauseTest {
 	@Test
 	public void adjustedStackTrace() {
 		try {
-			GuardClause.throwExceptionIf(0, is_(0));
+			GuardClause.throwExceptionIf(100, isOutOfRange(0, 10));
 			fail();
 		} catch (GuardConditionException e) {
 			// stack traceはthrowExceptionIfを書いたメソッドが先頭にくるはず
@@ -36,7 +37,7 @@ public class GuardClauseTest {
 	}
 
 	// hamcrestのisと区別するために用意
-	public static GuardCondition is_(final Object obj) {
+	public static GuardCondition<Object> is_(final Object obj) {
 		return GuardConditions.is(obj);
 	}
 }

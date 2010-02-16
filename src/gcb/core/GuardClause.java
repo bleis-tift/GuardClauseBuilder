@@ -14,7 +14,7 @@ public final class GuardClause {
 	 * @param arg 条件を満たすかどうか確認するオブジェクト
 	 * @param guardCond 条件を表すオブジェクト。nullを渡すことはできません。
 	 */
-	public static void throwExceptionIf(Object arg, GuardCondition guardCond) {
+	public static <T> void throwExceptionIf(T arg, GuardCondition<T> guardCond) {
 		if (guardCond.match(arg)) {
 			GuardConditionException e = new GuardConditionException();
 			// http://d.hatena.ne.jp/katzchang/20080820/p2

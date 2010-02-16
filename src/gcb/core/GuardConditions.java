@@ -14,8 +14,8 @@ public final class GuardConditions {
 	 * @param obj このオブジェクトと等しいかどうかが調べられる
 	 * @return ガード条件を表すオブジェクト
 	 */
-	public static GuardCondition is(final Object obj) {
-		return new GuardCondition() {
+	public static GuardCondition<Object> is(final Object obj) {
+		return new GuardCondition<Object>() {
 			public boolean match(Object arg) {
 				if (obj == null)
 					return arg == null;
@@ -28,8 +28,8 @@ public final class GuardConditions {
 	 * null、もしくは空であることを調べるガード条件を返します。
 	 * @return ガード条件を表すオブジェクト
 	 */
-	public static GuardCondition isNullOrEmpty() {
-		return new GuardCondition() {
+	public static GuardCondition<Object> isNullOrEmpty() {
+		return new GuardCondition<Object>() {
 			public boolean match(Object arg) {
 				if (arg == null)
 					return true;
@@ -52,6 +52,22 @@ public final class GuardConditions {
 	static boolean isEmptyCollection(Object collection) {
 		assert(collection != null && collection instanceof Collection<?>);
 		return ((Collection<?>)collection).isEmpty();
+	}
+
+	/**
+	 * 引数で指定されたオブジェクトの範囲外であることを調べるガード条件を返します。
+	 * @param from このオブジェクトを含まず、より小さければガード条件を満たします。
+	 * @param to このオブジェクトを含まず、より大きければガード条件を満たします。
+	 * @return ガード条件を表すオブジェクト
+	 */
+	public static <T extends Comparable<? super T>> GuardCondition<T> isOutOfRange(final T from, final T to) {
+		return new GuardCondition<T>() {
+			public boolean match(T arg) {
+				if (from == null || to == null || arg == null)
+					return false;
+				return !(from.compareTo(arg) <= 0 && arg.compareTo(to) <= 0);
+			}
+		};
 	}
 
 }

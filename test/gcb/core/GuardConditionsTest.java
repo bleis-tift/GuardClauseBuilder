@@ -39,4 +39,9 @@ public class GuardConditionsTest {
 		// 数値は問答無用でfalse
 		assertThat(GuardConditions.isNullOrEmpty().match(0), is(false));
 	}
+
+	@Test
+	public void testIsFromTo() {
+		assertThat(GuardConditions.isOutOfRange(0, 10).match(100), is(true));
+	}
 }
